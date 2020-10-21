@@ -1,0 +1,17 @@
+language: c
+sudo: false
+before_install:
+  - sudo apt-get install subversion git
+  - sudo apt-get install g++ libncurses5-dev zlib1g-dev gawk libssl-dev unzip make
+install:
+  - ln -s files_xiaomi_lumi files
+  - cp config_xiaomi_lumi .config
+  - ./scripts/feeds update -a
+  - ./scripts/feeds install -a
+  - make prereq
+  - make defconfig
+script:
+  - make -j$(($(nproc)+1)) V=s
+branches:
+  only:
+    - master
